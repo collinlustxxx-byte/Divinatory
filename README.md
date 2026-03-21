@@ -1,0 +1,2 @@
+# Divinatory
+Découvrez votre destin
