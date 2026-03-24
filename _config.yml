@@ -1,0 +1,10 @@
+title: Divinatory
+description: Découvrez votre destin avec le Tarot
+baseurl: "/Divinatory"
+url: "https://collinlustxxx.github.io"
+theme: null
+plugins: []
+exclude:
+  - "*.pdf"
+  - Gemfile
+  - Gemfile.lock
