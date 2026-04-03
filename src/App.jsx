@@ -3,6 +3,7 @@ import { majorArcana } from './data/majorArcana'
 import { batons, coupes } from './data/minorArcana_batons_coupes'
 import { epees, deniers } from './data/minorArcana_epees_deniers'
 import { oracleBelline } from './data/oracleBelline'
+import { lenormand } from './data/lenormand'
 
 const SUITS = [
   { nom: 'Bâtons', cartes: batons, couleur: '#c0782a' },
@@ -227,12 +228,15 @@ export default function App() {
     { id: 'majeurs', label: `Arcanes Majeurs (${majorArcana.length})` },
     ...SUITS.map(s => ({ id: s.nom, label: `${s.nom} (${s.cartes.length})` })),
     { id: 'belline', label: `Belline (${oracleBelline.length}/53)` },
+    { id: 'lenormand', label: `Lenormand (${lenormand.length}/36)` },
   ]
 
   const currentCards = tab === 'majeurs'
     ? majorArcana
     : tab === 'belline'
     ? oracleBelline
+    : tab === 'lenormand'
+    ? lenormand
     : SUITS.find(s => s.nom === tab)?.cartes ?? []
 
   return (
