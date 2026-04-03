@@ -12,6 +12,74 @@ const SUITS = [
   { nom: 'Deniers', cartes: deniers, couleur: '#bfaf3a' },
 ]
 
+// ─── Spread configuration ──────────────────────────────────────────────────
+
+// 9 tarot positions : nom affiché + index Belline associé (null = pas de Belline)
+const TPOS = [
+  { pos: 'La Situation',      bi: null }, // T1
+  { pos: "L'Obstacle",        bi: 0    }, // T2
+  { pos: 'Ce qui Aide',       bi: null }, // T3
+  { pos: 'La Réponse',        bi: 1    }, // T4
+  { pos: 'Le Passé',          bi: null }, // T5
+  { pos: 'Le Futur Immédiat', bi: null }, // T6
+  { pos: "L'Évolution",       bi: 2    }, // T7
+  { pos: 'Le Conseil',        bi: null }, // T8
+  { pos: 'Carte du Dessous',  bi: 3    }, // T9 (centre)
+]
+
+// Rôle de chacune des 4 cartes Belline dans le tirage
+const BROLES = [
+  'Nature réelle du blocage',
+  'Réponse saine, toxique ou illusoire ?',
+  'Vécu karmique de la situation',
+  'Intention profonde du tirage',
+]
+
+// Position [col, row] dans la grille 3×3 pour T1→T9
+const GPOS = [[0,0],[1,0],[2,0],[0,1],[0,2],[2,2],[2,1],[1,2],[1,1]]
+
+// ─── Tirage functions ──────────────────────────────────────────────────────
+
+function shuffle(arr) {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
+/**
+ * Construit la grille de tirage à partir de cartes mélangées.
+ * Retourne { grid: tableau 3×3, lenormandRow: [3 cartes] }
+ * Chaque cellule : { tarot:{card,rev}, posName, belline:{card,role}|null }
+ */
+function buildGrid(tarotDrawn, bellineDrawn, lenormandDrawn) {
+  const grid = Array.from({ length: 3 }, () => Array(3).fill(null))
+
+  tarotDrawn.forEach((slot, i) => {
+    const [col, row] = GPOS[i]
+    const bi = TPOS[i].bi
+    grid[row][col] = {
+      tarot:   slot,
+      posName: TPOS[i].pos,
+      belline: bi !== null
+        ? { card: bellineDrawn[bi].card, role: BROLES[bi] }
+        : null,
+    }
+  })
+
+  return { grid, lenormandRow: lenormandDrawn }
+}
+
+function drawSpread() {
+  const allTarot = [...majorArcana, ...batons, ...coupes, ...epees, ...deniers]
+  const tarotDrawn    = shuffle(allTarot).slice(0, 9).map(card => ({ card, rev: Math.random() < 0.3 }))
+  const bellineDrawn  = shuffle(oracleBelline).slice(0, 4).map(card => ({ card }))
+  const lenormandDrawn = shuffle(lenormand).slice(0, 3).map(card => ({ card }))
+  return buildGrid(tarotDrawn, bellineDrawn, lenormandDrawn)
+}
+
 const styles = {
   app: {
     minHeight: '100vh',
@@ -221,13 +289,96 @@ function CardGrid({ cartes }) {
   )
 }
 
+// ─── SpreadGrid component ──────────────────────────────────────────────────
+
+function SpreadGrid({ spread }) {
+  const [modal, setModal] = useState(null)
+
+  return (
+    <>
+      {/* Grille tarot 3×3 */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.6rem', maxWidth: '700px', margin: '0 auto' }}>
+        {spread.grid.flat().map((cell, i) => {
+          if (!cell) return <div key={i} />
+          const { tarot, posName, belline } = cell
+          return (
+            <div key={i} style={{ background: '#13092a', border: '1px solid #3a2060', borderRadius: '8px', overflow: 'hidden' }}>
+              {/* Position label */}
+              <div style={{ fontSize: '0.65rem', color: '#9a8a6a', textAlign: 'center', padding: '0.25rem 0.3rem 0', letterSpacing: '0.04em' }}>
+                {posName}
+              </div>
+              {/* Tarot card */}
+              <div
+                onClick={() => setModal(tarot.card)}
+                style={{ cursor: 'pointer', padding: '0.3rem' }}
+              >
+                {tarot.card.image
+                  ? <img
+                      src={tarot.card.image}
+                      alt={tarot.card.nom}
+                      loading="lazy"
+                      style={{
+                        width: '100%',
+                        aspectRatio: '2/3',
+                        objectFit: 'cover',
+                        borderRadius: '4px',
+                        display: 'block',
+                        transform: tarot.rev ? 'rotate(180deg)' : 'none',
+                        opacity: tarot.rev ? 0.8 : 1,
+                      }}
+                    />
+                  : <div style={{ width: '100%', aspectRatio: '2/3', background: '#1e1035', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3a2060', fontSize: '1.5rem' }}>✦</div>
+                }
+                <div style={{ fontSize: '0.68rem', color: tarot.rev ? '#9a6a6a' : '#e8ddc8', textAlign: 'center', padding: '0.2rem 0', lineHeight: 1.2 }}>
+                  {tarot.card.nom}{tarot.rev ? ' ↓' : ''}
+                </div>
+              </div>
+              {/* Belline card (si présente) */}
+              {belline && (
+                <div
+                  onClick={() => setModal(belline.card)}
+                  style={{ borderTop: '1px solid #3a2060', padding: '0.3rem', cursor: 'pointer', background: '#0f0620' }}
+                >
+                  <div style={{ fontSize: '0.58rem', color: '#7a5a9a', textAlign: 'center', marginBottom: '0.15rem' }}>{belline.role}</div>
+                  <div style={{ fontSize: '0.7rem', color: '#c9a84c', textAlign: 'center' }}>{belline.card.nom}</div>
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Lenormand row */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '0.6rem', marginTop: '1.2rem' }}>
+        {spread.lenormandRow.map(({ card }, i) => (
+          <div
+            key={i}
+            onClick={() => setModal(card)}
+            style={{ background: '#13092a', border: '1px solid #2a1060', borderRadius: '8px', padding: '0.4rem', width: '120px', cursor: 'pointer', textAlign: 'center' }}
+          >
+            <div style={{ fontSize: '0.6rem', color: '#7a5a9a', marginBottom: '0.2rem' }}>Lenormand {i + 1}</div>
+            <div style={{ fontSize: '0.8rem', color: '#c9a84c' }}>{card.nom}</div>
+            <div style={{ fontSize: '0.65rem', color: '#9a8a6a', marginTop: '0.2rem' }}>{card.motsClés?.slice(0, 2).join(' · ')}</div>
+          </div>
+        ))}
+      </div>
+
+      <CardModal card={modal} onClose={() => setModal(null)} />
+    </>
+  )
+}
+
+// ─── App ───────────────────────────────────────────────────────────────────
+
 export default function App() {
   const [tab, setTab] = useState('majeurs')
+  const [spread, setSpread] = useState(null)
 
   const tabs = [
-    { id: 'majeurs', label: `Arcanes Majeurs (${majorArcana.length})` },
+    { id: 'tirage',    label: '✦ Tirage' },
+    { id: 'majeurs',   label: `Arcanes Majeurs (${majorArcana.length})` },
     ...SUITS.map(s => ({ id: s.nom, label: `${s.nom} (${s.cartes.length})` })),
-    { id: 'belline', label: `Belline (${oracleBelline.length}/53)` },
+    { id: 'belline',   label: `Belline (${oracleBelline.length}/53)` },
     { id: 'lenormand', label: `Lenormand (${lenormand.length}/36)` },
   ]
 
@@ -268,7 +419,19 @@ export default function App() {
       </div>
 
       <section style={styles.section}>
-        <CardGrid cartes={currentCards} />
+        {tab === 'tirage' ? (
+          <div style={{ textAlign: 'center' }}>
+            <button
+              onClick={() => setSpread(drawSpread())}
+              style={{ padding: '0.7rem 2rem', background: '#3a2060', border: '1px solid #c9a84c', borderRadius: '8px', color: '#c9a84c', cursor: 'pointer', fontSize: '1rem', letterSpacing: '0.06em', marginBottom: '1.5rem' }}
+            >
+              {spread ? 'Nouveau tirage' : 'Tirer les cartes'}
+            </button>
+            {spread && <SpreadGrid spread={spread} />}
+          </div>
+        ) : (
+          <CardGrid cartes={currentCards} />
+        )}
       </section>
 
       <footer style={{ textAlign: 'center', color: '#3a2060', fontSize: '0.75rem', marginTop: '3rem' }}>
