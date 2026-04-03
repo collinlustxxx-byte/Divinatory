@@ -72,6 +72,61 @@ function buildGrid(tarotDrawn, bellineDrawn, lenormandDrawn) {
   return { grid, lenormandRow: lenormandDrawn }
 }
 
+/**
+ * Génère une lecture symbolique structurée sans appel API.
+ * Retourne le même format que la réponse Claude : {t, b, l, vd, vs, sy}
+ */
+function generateFallbackReading(spread, question) {
+  const cells = GPOS.map(([col, row]) => spread.grid[row][col])
+
+  // Première phrase d'une signification (jusqu'au premier point)
+  function firstSentence(text) {
+    if (!text) return ''
+    const idx = text.indexOf('.')
+    return idx > 0 ? text.slice(0, idx + 1) : text
+  }
+
+  // Interprétations Tarot
+  const t = cells.map((cell, i) => {
+    const { card, rev } = cell.tarot
+    const kws = rev
+      ? (card.motsClésInversé ?? card.motsClés ?? [])
+      : (card.motsClésEndroit ?? card.motsClés ?? [])
+    const sig = rev
+      ? (card.significationInversé ?? card.signification ?? '')
+      : (card.significationEndroit ?? card.signification ?? '')
+    const kwStr = kws.slice(0, 3).join(', ')
+    return `${card.nom}${rev ? ' (renversée)' : ''} en position « ${TPOS[i].pos} » — ${kwStr}. ${firstSentence(sig)}`
+  })
+
+  // Interprétations Belline
+  const b = BROLES.map((role, i) => {
+    const cell = cells.find(c => c.belline?.role === role)
+    if (!cell) return `${role} : non défini`
+    const { card } = cell.belline
+    const kwStr = card.motsClés?.slice(0, 3).join(', ') ?? ''
+    return `${role} — ${card.nom} (${kwStr}) : ${firstSentence(card.signification)}`
+  })
+
+  // Interprétations Lenormand
+  const l = spread.lenormandRow.map(({ card }, i) => {
+    const kwStr = card.motsClés?.slice(0, 2).join(', ') ?? ''
+    return `${card.nom} (${kwStr}) : ${firstSentence(card.signification)}`
+  })
+
+  // Thèmes dominants pour la synthèse
+  const themes = cells.slice(0, 3).map(c =>
+    (c.tarot.card.motsClésEndroit ?? c.tarot.card.motsClés ?? [])[0]
+  ).filter(Boolean)
+
+  const sy = `Cette lecture symbolique explore votre question à travers ${themes.join(', ')} et d'autres énergies présentes. `
+    + `La Situation ouvre sur ${cells[0].tarot.card.nom}, tandis que la Carte du Dessous — ${cells[8].tarot.card.nom} — révèle la dynamique profonde. `
+    + `Consultez chaque position pour une réponse nuancée. `
+    + `(Lecture automatique — ajoutez une clé API Claude pour une interprétation personnalisée.)`
+
+  return { t, b, l, vd: 'accord', vs: 'Lecture symbolique générée à partir des mots-clés et significations des cartes.', sy }
+}
+
 function drawSpread() {
   const allTarot = [...majorArcana, ...batons, ...coupes, ...epees, ...deniers]
   const tarotDrawn    = shuffle(allTarot).slice(0, 9).map(card => ({ card, rev: Math.random() < 0.3 }))
@@ -625,15 +680,20 @@ Réponds uniquement en JSON valide sans backticks ni markdown:
 
         {/* Pas encore demandé */}
         {!synthesis && (
-          <div style={{ textAlign: 'center' }}>
-            {apiKey ? (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.7rem' }}>
+            {apiKey && (
               <button onClick={fetchSynthesis}
                 style={{ padding: '0.7rem 2rem', background: '#2a1060', border: '1px solid #7a5a9a', borderRadius: '8px', color: '#c9a84c', cursor: 'pointer', fontSize: '0.95rem', letterSpacing: '0.06em' }}>
-                Obtenir la lecture par Claude
+                Lecture par Claude (IA)
               </button>
-            ) : (
-              <div style={{ color: '#4a3060', fontSize: '0.85rem', padding: '1rem', border: '1px dashed #3a2060', borderRadius: '8px' }}>
-                Ajoutez une clé API Claude (sur l'écran précédent) pour obtenir la lecture interprétée.
+            )}
+            <button onClick={() => setSynthesis({ data: generateFallbackReading(spread, question) })}
+              style={{ padding: '0.6rem 1.8rem', background: '#13092a', border: '1px solid #3a2060', borderRadius: '8px', color: '#9a8a6a', cursor: 'pointer', fontSize: '0.88rem', letterSpacing: '0.04em' }}>
+              Lecture symbolique (sans clé API)
+            </button>
+            {!apiKey && (
+              <div style={{ color: '#4a3060', fontSize: '0.72rem', textAlign: 'center' }}>
+                Ajoutez une clé API Claude pour une interprétation personnalisée.
               </div>
             )}
           </div>
