@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { majorArcana } from './data/majorArcana'
 import { batons, coupes } from './data/minorArcana_batons_coupes'
 import { epees, deniers } from './data/minorArcana_epees_deniers'
+import { oracleBelline } from './data/oracleBelline'
 
 const SUITS = [
   { nom: 'Bâtons', cartes: batons, couleur: '#c0782a' },
@@ -164,15 +165,15 @@ function CardModal({ card, onClose }) {
           {card.element && <span style={styles.badge}>{card.element}</span>}
           {card.planete && <span style={styles.badge}>{card.planete}</span>}
         </div>
-        {card.motsClésEndroit?.length > 0 && (
+        {(card.motsClésEndroit ?? card.motsClés)?.length > 0 && (
           <div style={styles.kw}>
-            {card.motsClésEndroit.map(k => (
+            {(card.motsClésEndroit ?? card.motsClés).map(k => (
               <span key={k} style={styles.kwTag}>{k}</span>
             ))}
           </div>
         )}
-        {card.significationEndroit && (
-          <p style={styles.para}>{card.significationEndroit}</p>
+        {(card.significationEndroit ?? card.signification) && (
+          <p style={styles.para}>{card.significationEndroit ?? card.signification}</p>
         )}
         {card.significationInversé && (
           <p style={{ ...styles.para, color: '#9a8a6a', borderTop: '1px solid #3a2060', paddingTop: '0.6rem' }}>
@@ -225,10 +226,13 @@ export default function App() {
   const tabs = [
     { id: 'majeurs', label: `Arcanes Majeurs (${majorArcana.length})` },
     ...SUITS.map(s => ({ id: s.nom, label: `${s.nom} (${s.cartes.length})` })),
+    { id: 'belline', label: `Belline (${oracleBelline.length}/53)` },
   ]
 
   const currentCards = tab === 'majeurs'
     ? majorArcana
+    : tab === 'belline'
+    ? oracleBelline
     : SUITS.find(s => s.nom === tab)?.cartes ?? []
 
   return (
