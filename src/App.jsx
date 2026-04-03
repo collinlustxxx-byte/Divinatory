@@ -371,72 +371,160 @@ function SpreadGrid({ spread }) {
 // ─── App ───────────────────────────────────────────────────────────────────
 
 export default function App() {
-  const [tab, setTab] = useState('majeurs')
-  const [spread, setSpread] = useState(null)
+  const [step, setStep]         = useState('question') // 'question' | 'spread'
+  const [question, setQuestion] = useState('')
+  const [spread, setSpread]     = useState(null)
+  const [catalogTab, setCatalogTab] = useState(null)   // null = caché
 
-  const tabs = [
-    { id: 'tirage',    label: '✦ Tirage' },
-    { id: 'majeurs',   label: `Arcanes Majeurs (${majorArcana.length})` },
+  const catalogTabs = [
+    { id: 'majeurs',   label: `Majeurs (${majorArcana.length})` },
     ...SUITS.map(s => ({ id: s.nom, label: `${s.nom} (${s.cartes.length})` })),
-    { id: 'belline',   label: `Belline (${oracleBelline.length}/53)` },
-    { id: 'lenormand', label: `Lenormand (${lenormand.length}/36)` },
+    { id: 'belline',   label: `Belline (${oracleBelline.length})` },
+    { id: 'lenormand', label: `Lenormand (${lenormand.length})` },
   ]
 
-  const currentCards = tab === 'majeurs'
+  const catalogCards = catalogTab === 'majeurs'
     ? majorArcana
-    : tab === 'belline'
+    : catalogTab === 'belline'
     ? oracleBelline
-    : tab === 'lenormand'
+    : catalogTab === 'lenormand'
     ? lenormand
-    : SUITS.find(s => s.nom === tab)?.cartes ?? []
+    : SUITS.find(s => s.nom === catalogTab)?.cartes ?? []
 
-  return (
-    <div style={styles.app}>
-      <header style={styles.header}>
-        <h1 style={styles.title}>✦ Divinatory ✦</h1>
-        <p style={styles.subtitle}>L'Art du Tirage — prototype</p>
-      </header>
+  function handleDraw() {
+    if (!question.trim()) return
+    setSpread(drawSpread())
+    setStep('spread')
+    setCatalogTab(null)
+  }
 
-      {/* Tabs */}
-      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
-        {tabs.map(t => (
-          <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
+  function handleReset() {
+    setStep('question')
+    setQuestion('')
+    setSpread(null)
+    setCatalogTab(null)
+  }
+
+  // ── Écran Question ────────────────────────────────────────────────────────
+  if (step === 'question') {
+    return (
+      <div style={{ ...styles.app, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <header style={{ textAlign: 'center', marginBottom: '3rem' }}>
+          <h1 style={styles.title}>✦ Divinatory ✦</h1>
+          <p style={styles.subtitle}>L'Art du Tirage — Tarot · Belline · Lenormand</p>
+        </header>
+
+        <div style={{ width: '100%', maxWidth: '540px' }}>
+          <label style={{ display: 'block', color: '#9a8a6a', fontSize: '0.85rem', marginBottom: '0.6rem', letterSpacing: '0.06em' }}>
+            Formulez votre question
+          </label>
+          <textarea
+            value={question}
+            onChange={e => setQuestion(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), handleDraw())}
+            placeholder="Quelle guidance cherchez-vous ?"
+            rows={4}
             style={{
-              padding: '0.4rem 0.9rem',
-              background: tab === t.id ? '#3a2060' : '#13092a',
-              border: `1px solid ${tab === t.id ? '#c9a84c' : '#3a2060'}`,
-              borderRadius: '6px',
-              color: tab === t.id ? '#c9a84c' : '#9a8a6a',
-              cursor: 'pointer',
-              fontSize: '0.85rem',
+              width: '100%',
+              background: '#13092a',
+              border: '1px solid #3a2060',
+              borderRadius: '8px',
+              color: '#e8ddc8',
+              fontFamily: 'Georgia, serif',
+              fontSize: '1rem',
+              padding: '0.8rem 1rem',
+              resize: 'vertical',
+              outline: 'none',
+              boxSizing: 'border-box',
+            }}
+          />
+          <button
+            onClick={handleDraw}
+            disabled={!question.trim()}
+            style={{
+              marginTop: '1rem',
+              width: '100%',
+              padding: '0.85rem',
+              background: question.trim() ? '#3a2060' : '#1a1030',
+              border: `1px solid ${question.trim() ? '#c9a84c' : '#3a2060'}`,
+              borderRadius: '8px',
+              color: question.trim() ? '#c9a84c' : '#4a3060',
+              cursor: question.trim() ? 'pointer' : 'default',
+              fontSize: '1.05rem',
+              letterSpacing: '0.08em',
+              transition: 'all 0.2s',
             }}
           >
-            {t.label}
+            Révéler le tirage
           </button>
-        ))}
+        </div>
+
+        {/* Accès au catalogue */}
+        <div style={{ marginTop: '3rem', textAlign: 'center' }}>
+          <div style={{ color: '#3a2060', fontSize: '0.75rem', marginBottom: '0.5rem' }}>— Parcourir les decks —</div>
+          <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+            {catalogTabs.map(t => (
+              <button key={t.id} onClick={() => setCatalogTab(catalogTab === t.id ? null : t.id)}
+                style={{ padding: '0.3rem 0.7rem', background: catalogTab === t.id ? '#3a2060' : '#13092a', border: `1px solid ${catalogTab === t.id ? '#c9a84c' : '#3a2060'}`, borderRadius: '5px', color: catalogTab === t.id ? '#c9a84c' : '#9a8a6a', cursor: 'pointer', fontSize: '0.78rem' }}>
+                {t.label}
+              </button>
+            ))}
+          </div>
+          {catalogTab && (
+            <div style={{ marginTop: '1.2rem', maxWidth: '900px', width: '100%' }}>
+              <CardGrid cartes={catalogCards} />
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  // ── Écran Tirage ──────────────────────────────────────────────────────────
+  return (
+    <div style={styles.app}>
+      {/* En-tête */}
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+        <div>
+          <h1 style={{ ...styles.title, fontSize: '1.4rem', margin: 0 }}>✦ Divinatory</h1>
+        </div>
+        <button onClick={handleReset}
+          style={{ padding: '0.4rem 1rem', background: '#13092a', border: '1px solid #3a2060', borderRadius: '6px', color: '#9a8a6a', cursor: 'pointer', fontSize: '0.85rem' }}>
+          ↩ Nouveau tirage
+        </button>
+      </header>
+
+      {/* Question */}
+      <div style={{ background: '#13092a', border: '1px solid #3a2060', borderRadius: '8px', padding: '0.8rem 1.2rem', marginBottom: '1.5rem' }}>
+        <span style={{ color: '#7a5a9a', fontSize: '0.75rem', letterSpacing: '0.06em' }}>QUESTION </span>
+        <span style={{ color: '#e8ddc8', fontSize: '0.95rem' }}>{question}</span>
       </div>
 
-      <section style={styles.section}>
-        {tab === 'tirage' ? (
-          <div style={{ textAlign: 'center' }}>
-            <button
-              onClick={() => setSpread(drawSpread())}
-              style={{ padding: '0.7rem 2rem', background: '#3a2060', border: '1px solid #c9a84c', borderRadius: '8px', color: '#c9a84c', cursor: 'pointer', fontSize: '1rem', letterSpacing: '0.06em', marginBottom: '1.5rem' }}
-            >
-              {spread ? 'Nouveau tirage' : 'Tirer les cartes'}
-            </button>
-            {spread && <SpreadGrid spread={spread} />}
-          </div>
-        ) : (
-          <CardGrid cartes={currentCards} />
-        )}
-      </section>
+      {/* Légende */}
+      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '1rem', fontSize: '0.72rem', color: '#9a8a6a' }}>
+        <span>■ <span style={{ color: '#e8ddc8' }}>Tarot</span> — clic pour détails</span>
+        <span>■ <span style={{ color: '#c9a84c' }}>Belline</span> — lecture en profondeur</span>
+        <span>■ <span style={{ color: '#7a5a9a' }}>Lenormand</span> — contexte quotidien</span>
+        <span>↓ = carte renversée</span>
+      </div>
 
-      <footer style={{ textAlign: 'center', color: '#3a2060', fontSize: '0.75rem', marginTop: '3rem' }}>
-        Clique sur une carte pour voir sa signification
-      </footer>
+      {/* Grille */}
+      {spread && <SpreadGrid spread={spread} />}
+
+      {/* Synthèse placeholder */}
+      <div style={{ maxWidth: '700px', margin: '2rem auto 0', background: '#13092a', border: '1px dashed #3a2060', borderRadius: '8px', padding: '1.2rem', textAlign: 'center' }}>
+        <div style={{ color: '#7a5a9a', fontSize: '0.85rem', marginBottom: '0.4rem', letterSpacing: '0.06em' }}>SYNTHÈSE IA</div>
+        <div style={{ color: '#4a3060', fontSize: '0.85rem' }}>
+          La lecture interprétée par Claude sera affichée ici — disponible à l'étape 5 (clé API).
+        </div>
+      </div>
+
+      <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+        <button onClick={handleReset}
+          style={{ padding: '0.6rem 1.8rem', background: '#3a2060', border: '1px solid #5a3090', borderRadius: '7px', color: '#e8ddc8', cursor: 'pointer', fontSize: '0.9rem' }}>
+          ↩ Nouvelle question
+        </button>
+      </div>
     </div>
   )
 }
