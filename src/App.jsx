@@ -405,11 +405,77 @@ export default function App() {
     setCatalogTab(null)
   }
 
+  const [synthesis, setSynthesis] = useState(null)
+  // null = pas demandé | {loading:true} | {data:{...}} | {error:'...'}
+
   function handleReset() {
     setStep('question')
     setQuestion('')
     setSpread(null)
     setCatalogTab(null)
+    setSynthesis(null)
+  }
+
+  async function fetchSynthesis() {
+    setSynthesis({ loading: true })
+    try {
+      const cells = GPOS.map(([col, row]) => spread.grid[row][col])
+
+      const tL = cells.map((cell, i) =>
+        `T${i + 1} – ${TPOS[i].pos}: ${cell.tarot.card.nom}${cell.tarot.rev ? ' (renversée)' : ''}`
+      ).join('\n')
+
+      const bL = BROLES.map((role, i) => {
+        const cell = cells.find(c => c.belline?.role === role)
+        return cell ? `B${i + 1} – ${role}: ${cell.belline.card.nom}` : ''
+      }).filter(Boolean).join('\n')
+
+      const lL = spread.lenormandRow.map(({ card }, i) =>
+        `L${i + 1}: ${card.nom} (${card.motsClés?.slice(0, 2).join(', ')})`
+      ).join('\n')
+
+      const prompt = `QUESTION: "${question}"
+
+TAROT (9 positions):
+${tL}
+
+BELLINE (4 cartes de profondeur):
+${bL}
+
+LENORMAND (contexte):
+${lL}
+
+Méthode: Tarot (sens profond) → Belline (sous les masques) → Lenormand (réalité concrète). Convergence = vérité. Divergence = tension à nommer.
+
+Réponds uniquement en JSON valide sans backticks ni markdown:
+{"t":["T1: 2 phrases précises liées à la carte ET à la question","T2:...","T3:...","T4:...","T5:...","T6:...","T7:...","T8:...","T9:..."],"b":["B1: rôle et sens","B2:...","B3:...","B4:..."],"l":["L1:...","L2:...","L3:..."],"vd":"accord|contradiction|tension","vs":"1 phrase sur la convergence ou divergence des 3 systèmes","sy":"synthèse globale 3-4 phrases répondant directement à la question"}`
+
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true',
+        },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 2000,
+          messages: [{ role: 'user', content: prompt }],
+        }),
+      })
+
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}))
+        throw new Error(err.error?.message || `Erreur API ${resp.status}`)
+      }
+
+      const data = await resp.json()
+      const parsed = JSON.parse(data.content[0].text)
+      setSynthesis({ data: parsed })
+    } catch (e) {
+      setSynthesis({ error: e.message })
+    }
   }
 
   // ── Écran Question ────────────────────────────────────────────────────────
@@ -553,12 +619,93 @@ export default function App() {
       {/* Grille */}
       {spread && <SpreadGrid spread={spread} />}
 
-      {/* Synthèse placeholder */}
-      <div style={{ maxWidth: '700px', margin: '2rem auto 0', background: '#13092a', border: '1px dashed #3a2060', borderRadius: '8px', padding: '1.2rem', textAlign: 'center' }}>
-        <div style={{ color: '#7a5a9a', fontSize: '0.85rem', marginBottom: '0.4rem', letterSpacing: '0.06em' }}>SYNTHÈSE IA</div>
-        <div style={{ color: '#4a3060', fontSize: '0.85rem' }}>
-          La lecture interprétée par Claude sera affichée ici — disponible à l'étape 5 (clé API).
-        </div>
+      {/* Synthèse IA */}
+      <div style={{ maxWidth: '700px', margin: '2rem auto 0' }}>
+        <div style={{ color: '#7a5a9a', fontSize: '0.8rem', letterSpacing: '0.08em', marginBottom: '0.8rem', textAlign: 'center' }}>— SYNTHÈSE IA —</div>
+
+        {/* Pas encore demandé */}
+        {!synthesis && (
+          <div style={{ textAlign: 'center' }}>
+            {apiKey ? (
+              <button onClick={fetchSynthesis}
+                style={{ padding: '0.7rem 2rem', background: '#2a1060', border: '1px solid #7a5a9a', borderRadius: '8px', color: '#c9a84c', cursor: 'pointer', fontSize: '0.95rem', letterSpacing: '0.06em' }}>
+                Obtenir la lecture par Claude
+              </button>
+            ) : (
+              <div style={{ color: '#4a3060', fontSize: '0.85rem', padding: '1rem', border: '1px dashed #3a2060', borderRadius: '8px' }}>
+                Ajoutez une clé API Claude (sur l'écran précédent) pour obtenir la lecture interprétée.
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Chargement */}
+        {synthesis?.loading && (
+          <div style={{ textAlign: 'center', color: '#7a5a9a', padding: '1.5rem', border: '1px solid #3a2060', borderRadius: '8px', fontSize: '0.9rem' }}>
+            Lecture en cours…
+          </div>
+        )}
+
+        {/* Erreur */}
+        {synthesis?.error && (
+          <div style={{ padding: '1rem', background: '#1a0820', border: '1px solid #6a2040', borderRadius: '8px', textAlign: 'center' }}>
+            <div style={{ color: '#c06080', fontSize: '0.85rem', marginBottom: '0.6rem' }}>{synthesis.error}</div>
+            <button onClick={fetchSynthesis}
+              style={{ padding: '0.4rem 1rem', background: '#3a2060', border: '1px solid #5a3090', borderRadius: '6px', color: '#e8ddc8', cursor: 'pointer', fontSize: '0.8rem' }}>
+              Réessayer
+            </button>
+          </div>
+        )}
+
+        {/* Résultats */}
+        {synthesis?.data && (() => {
+          const d = synthesis.data
+          const cells = GPOS.map(([col, row]) => spread.grid[row][col])
+          return (
+            <div>
+              {/* Synthèse globale */}
+              <div style={{ background: '#1a0e30', border: '1px solid #5a3090', borderRadius: '8px', padding: '1rem 1.2rem', marginBottom: '1.2rem' }}>
+                <div style={{ color: '#c9a84c', fontSize: '0.75rem', letterSpacing: '0.06em', marginBottom: '0.5rem' }}>SYNTHÈSE GLOBALE</div>
+                <p style={{ color: '#e8ddc8', fontSize: '0.92rem', lineHeight: 1.65, margin: 0 }}>{d.sy}</p>
+                {d.vs && <p style={{ color: '#9a8a6a', fontSize: '0.8rem', marginTop: '0.6rem', marginBottom: 0, fontStyle: 'italic' }}>{d.vs}</p>}
+              </div>
+
+              {/* Tarot — 9 positions */}
+              <div style={{ marginBottom: '1rem' }}>
+                <div style={{ color: '#9a8a6a', fontSize: '0.75rem', letterSpacing: '0.06em', marginBottom: '0.5rem' }}>TAROT</div>
+                {d.t?.map((txt, i) => (
+                  <div key={i} style={{ display: 'flex', gap: '0.6rem', marginBottom: '0.4rem', fontSize: '0.84rem' }}>
+                    <span style={{ color: '#5a3090', minWidth: '2rem', flexShrink: 0 }}>T{i + 1}</span>
+                    <span style={{ color: '#7a5a9a', minWidth: '110px', flexShrink: 0, fontSize: '0.78rem' }}>{cells[i]?.posName}</span>
+                    <span style={{ color: '#e8ddc8', lineHeight: 1.5 }}>{txt}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Belline — 4 cartes */}
+              <div style={{ marginBottom: '1rem' }}>
+                <div style={{ color: '#9a8a6a', fontSize: '0.75rem', letterSpacing: '0.06em', marginBottom: '0.5rem' }}>BELLINE</div>
+                {d.b?.map((txt, i) => (
+                  <div key={i} style={{ display: 'flex', gap: '0.6rem', marginBottom: '0.4rem', fontSize: '0.84rem' }}>
+                    <span style={{ color: '#5a3090', minWidth: '2rem', flexShrink: 0 }}>B{i + 1}</span>
+                    <span style={{ color: '#c9a84c', lineHeight: 1.5 }}>{txt}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Lenormand */}
+              <div>
+                <div style={{ color: '#9a8a6a', fontSize: '0.75rem', letterSpacing: '0.06em', marginBottom: '0.5rem' }}>LENORMAND</div>
+                {d.l?.map((txt, i) => (
+                  <div key={i} style={{ display: 'flex', gap: '0.6rem', marginBottom: '0.4rem', fontSize: '0.84rem' }}>
+                    <span style={{ color: '#5a3090', minWidth: '2rem', flexShrink: 0 }}>L{i + 1}</span>
+                    <span style={{ color: '#e8ddc8', lineHeight: 1.5 }}>{txt}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
+        })()}
       </div>
 
       <div style={{ textAlign: 'center', marginTop: '2rem' }}>
