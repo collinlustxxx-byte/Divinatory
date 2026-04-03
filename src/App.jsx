@@ -375,6 +375,13 @@ export default function App() {
   const [question, setQuestion] = useState('')
   const [spread, setSpread]     = useState(null)
   const [catalogTab, setCatalogTab] = useState(null)   // null = caché
+  const [apiKey, setApiKey]     = useState(() => localStorage.getItem('divinatory_api_key') || '')
+  const [showApiInput, setShowApiInput] = useState(false)
+
+  function handleApiKeyChange(val) {
+    setApiKey(val)
+    localStorage.setItem('divinatory_api_key', val)
+  }
 
   const catalogTabs = [
     { id: 'majeurs',   label: `Majeurs (${majorArcana.length})` },
@@ -457,6 +464,41 @@ export default function App() {
           >
             Révéler le tirage
           </button>
+
+          {/* Clé API — optionnelle, sauvegardée en localStorage */}
+          <div style={{ marginTop: '1.2rem', textAlign: 'right' }}>
+            <button
+              onClick={() => setShowApiInput(v => !v)}
+              style={{ background: 'none', border: 'none', color: apiKey ? '#7a5a9a' : '#4a3060', cursor: 'pointer', fontSize: '0.78rem', letterSpacing: '0.04em' }}
+            >
+              {apiKey ? '⚙ Clé API configurée' : '⚙ Ajouter une clé API Claude'}
+            </button>
+            {showApiInput && (
+              <div style={{ marginTop: '0.5rem' }}>
+                <input
+                  type="password"
+                  value={apiKey}
+                  onChange={e => handleApiKeyChange(e.target.value)}
+                  placeholder="sk-ant-api03-..."
+                  style={{
+                    width: '100%',
+                    background: '#0f0620',
+                    border: '1px solid #3a2060',
+                    borderRadius: '6px',
+                    color: '#c9a84c',
+                    fontFamily: 'monospace',
+                    fontSize: '0.85rem',
+                    padding: '0.5rem 0.8rem',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                  }}
+                />
+                <div style={{ color: '#4a3060', fontSize: '0.7rem', marginTop: '0.3rem' }}>
+                  Stockée uniquement dans votre navigateur (localStorage). Sans clé : lecture symbolique automatique.
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Accès au catalogue */}
