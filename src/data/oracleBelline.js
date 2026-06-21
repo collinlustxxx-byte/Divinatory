@@ -10,6 +10,7 @@ export const oracleBelline = [
   {
     id: 'belline-0',
     numero: 0,
+    image: '/belline/belline-00.png',
     nom: 'La Carte Bleue',
     serie: 'Maîtresse',
     polarite: 'positive',
@@ -19,6 +20,7 @@ export const oracleBelline = [
   {
     id: 'belline-1',
     numero: 1,
+    image: '/belline/belline-01.png',
     nom: 'La Destinée',
     serie: 'Maîtresse',
     polarite: 'neutre',
@@ -28,6 +30,7 @@ export const oracleBelline = [
   {
     id: 'belline-2',
     numero: 2,
+    image: '/belline/belline-02.png',
     nom: 'L\'Étoile de l\'Homme',
     serie: 'Maîtresse',
     polarite: 'neutre',
@@ -37,6 +40,7 @@ export const oracleBelline = [
   {
     id: 'belline-3',
     numero: 3,
+    image: '/belline/belline-03.png',
     nom: 'L\'Étoile de la Femme',
     serie: 'Maîtresse',
     polarite: 'neutre',
@@ -48,6 +52,7 @@ export const oracleBelline = [
   {
     id: 'belline-4',
     numero: 4,
+    image: '/belline/belline-04.png',
     nom: 'La Nativité',
     serie: 'Solaire',
     polarite: 'positive',
@@ -57,6 +62,7 @@ export const oracleBelline = [
   {
     id: 'belline-5',
     numero: 5,
+    image: '/belline/belline-05.png',
     nom: 'La Réussite',
     serie: 'Solaire',
     polarite: 'positive',
@@ -66,6 +72,7 @@ export const oracleBelline = [
   {
     id: 'belline-6',
     numero: 6,
+    image: '/belline/belline-06.png',
     nom: 'L\'Élévation',
     serie: 'Solaire',
     polarite: 'positive',
@@ -75,6 +82,7 @@ export const oracleBelline = [
   {
     id: 'belline-7',
     numero: 7,
+    image: '/belline/belline-07.png',
     nom: 'Honneurs',
     serie: 'Solaire',
     polarite: 'positive',
@@ -84,6 +92,7 @@ export const oracleBelline = [
   {
     id: 'belline-8',
     numero: 8,
+    image: '/belline/belline-08.png',
     nom: 'Pensée-Amitié',
     serie: 'Solaire',
     polarite: 'positive',
@@ -93,6 +102,7 @@ export const oracleBelline = [
   {
     id: 'belline-9',
     numero: 9,
+    image: '/belline/belline-09.png',
     nom: 'Campagne-Santé',
     serie: 'Solaire',
     polarite: 'positive',
@@ -102,6 +112,7 @@ export const oracleBelline = [
   {
     id: 'belline-10',
     numero: 10,
+    image: '/belline/belline-10.png',
     nom: 'Présents',
     serie: 'Solaire',
     polarite: 'positive',
@@ -113,6 +124,7 @@ export const oracleBelline = [
   {
     id: 'belline-11',
     numero: 11,
+    image: '/belline/belline-11.png',
     nom: 'Trahison',
     serie: 'Lunaire',
     polarite: 'negative',
@@ -122,6 +134,7 @@ export const oracleBelline = [
   {
     id: 'belline-12',
     numero: 12,
+    image: '/belline/belline-12.png',
     nom: 'Départ',
     serie: 'Lunaire',
     polarite: 'neutre',
@@ -131,6 +144,7 @@ export const oracleBelline = [
   {
     id: 'belline-13',
     numero: 13,
+    image: '/belline/belline-13.png',
     nom: 'Inconstance',
     serie: 'Lunaire',
     polarite: 'negative',
@@ -140,6 +154,7 @@ export const oracleBelline = [
   {
     id: 'belline-14',
     numero: 14,
+    image: '/belline/belline-14.png',
     nom: 'Découverte',
     serie: 'Lunaire',
     polarite: 'positive',
@@ -149,6 +164,7 @@ export const oracleBelline = [
   {
     id: 'belline-15',
     numero: 15,
+    image: '/belline/belline-15.png',
     nom: 'L\'Eau',
     serie: 'Lunaire',
     polarite: 'neutre',
@@ -158,6 +174,7 @@ export const oracleBelline = [
   {
     id: 'belline-16',
     numero: 16,
+    image: '/belline/belline-16.png',
     nom: 'Les Pénates',
     serie: 'Lunaire',
     polarite: 'positive',
@@ -167,6 +184,7 @@ export const oracleBelline = [
   {
     id: 'belline-17',
     numero: 17,
+    image: '/belline/belline-17.png',
     nom: 'Maladie',
     serie: 'Lunaire',
     polarite: 'negative',
@@ -178,6 +196,7 @@ export const oracleBelline = [
   {
     id: 'belline-18',
     numero: 18,
+    image: '/belline/belline-18.png',
     nom: 'Changement',
     serie: 'Mercurienne',
     polarite: 'neutre',
@@ -187,6 +206,7 @@ export const oracleBelline = [
   {
     id: 'belline-19',
     numero: 19,
+    image: '/belline/belline-19.png',
     nom: 'Argent',
     serie: 'Mercurienne',
     polarite: 'positive',
@@ -196,6 +216,7 @@ export const oracleBelline = [
   {
     id: 'belline-20',
     numero: 20,
+    image: '/belline/belline-20.png',
     nom: 'Intelligence',
     serie: 'Mercurienne',
     polarite: 'positive',
@@ -205,6 +226,7 @@ export const oracleBelline = [
   {
     id: 'belline-21',
     numero: 21,
+    image: '/belline/belline-21.png',
     nom: 'Vol-Perte',
     serie: 'Mercurienne',
     polarite: 'negative',
@@ -214,6 +236,7 @@ export const oracleBelline = [
   {
     id: 'belline-22',
     numero: 22,
+    image: '/belline/belline-22.png',
     nom: 'Entreprises',
     serie: 'Mercurienne',
     polarite: 'positive',
@@ -223,6 +246,7 @@ export const oracleBelline = [
   {
     id: 'belline-23',
     numero: 23,
+    image: '/belline/belline-23.png',
     nom: 'Trafic',
     serie: 'Mercurienne',
     polarite: 'neutre',
@@ -232,6 +256,7 @@ export const oracleBelline = [
   {
     id: 'belline-24',
     numero: 24,
+    image: '/belline/belline-24.png',
     nom: 'Nouvelle',
     serie: 'Mercurienne',
     polarite: 'positive',
@@ -243,6 +268,7 @@ export const oracleBelline = [
   {
     id: 'belline-25',
     numero: 25,
+    image: '/belline/belline-25.png',
     nom: 'Plaisirs',
     serie: 'Vénusienne',
     polarite: 'positive',
@@ -252,6 +278,7 @@ export const oracleBelline = [
   {
     id: 'belline-26',
     numero: 26,
+    image: '/belline/belline-26.png',
     nom: 'Paix',
     serie: 'Vénusienne',
     polarite: 'positive',
@@ -261,6 +288,7 @@ export const oracleBelline = [
   {
     id: 'belline-27',
     numero: 27,
+    image: '/belline/belline-27.png',
     nom: 'Union',
     serie: 'Vénusienne',
     polarite: 'positive',
@@ -270,6 +298,7 @@ export const oracleBelline = [
   {
     id: 'belline-28',
     numero: 28,
+    image: '/belline/belline-28.png',
     nom: 'Famille',
     serie: 'Vénusienne',
     polarite: 'positive',
@@ -279,6 +308,7 @@ export const oracleBelline = [
   {
     id: 'belline-29',
     numero: 29,
+    image: '/belline/belline-29.png',
     nom: 'Amour',
     serie: 'Vénusienne',
     polarite: 'positive',
@@ -288,6 +318,7 @@ export const oracleBelline = [
   {
     id: 'belline-30',
     numero: 30,
+    image: '/belline/belline-30.png',
     nom: 'La Table',
     serie: 'Vénusienne',
     polarite: 'positive',
@@ -297,6 +328,7 @@ export const oracleBelline = [
   {
     id: 'belline-31',
     numero: 31,
+    image: '/belline/belline-31.png',
     nom: 'Passions',
     serie: 'Vénusienne',
     polarite: 'neutre',
@@ -308,6 +340,7 @@ export const oracleBelline = [
   {
     id: 'belline-32',
     numero: 32,
+    image: '/belline/belline-32.png',
     nom: 'Méchanceté',
     serie: 'Martienne',
     polarite: 'negative',
@@ -317,6 +350,7 @@ export const oracleBelline = [
   {
     id: 'belline-33',
     numero: 33,
+    image: '/belline/belline-33.png',
     nom: 'Procès',
     serie: 'Martienne',
     polarite: 'negative',
@@ -326,6 +360,7 @@ export const oracleBelline = [
   {
     id: 'belline-34',
     numero: 34,
+    image: '/belline/belline-34.png',
     nom: 'Despotisme',
     serie: 'Martienne',
     polarite: 'negative',
@@ -335,6 +370,7 @@ export const oracleBelline = [
   {
     id: 'belline-35',
     numero: 35,
+    image: '/belline/belline-35.png',
     nom: 'Ennemis',
     serie: 'Martienne',
     polarite: 'negative',
@@ -344,6 +380,7 @@ export const oracleBelline = [
   {
     id: 'belline-36',
     numero: 36,
+    image: '/belline/belline-36.png',
     nom: 'Pourparlers',
     serie: 'Martienne',
     polarite: 'neutre',
@@ -353,6 +390,7 @@ export const oracleBelline = [
   {
     id: 'belline-37',
     numero: 37,
+    image: '/belline/belline-37.png',
     nom: 'Feu',
     serie: 'Martienne',
     polarite: 'neutre',
@@ -362,6 +400,7 @@ export const oracleBelline = [
   {
     id: 'belline-38',
     numero: 38,
+    image: '/belline/belline-38.png',
     nom: 'Accident',
     serie: 'Martienne',
     polarite: 'negative',
@@ -373,6 +412,7 @@ export const oracleBelline = [
   {
     id: 'belline-39',
     numero: 39,
+    image: '/belline/belline-39.png',
     nom: 'Appui',
     serie: 'Jupitérienne',
     polarite: 'positive',
@@ -382,6 +422,7 @@ export const oracleBelline = [
   {
     id: 'belline-40',
     numero: 40,
+    image: '/belline/belline-40.png',
     nom: 'Beauté',
     serie: 'Jupitérienne',
     polarite: 'positive',
@@ -391,6 +432,7 @@ export const oracleBelline = [
   {
     id: 'belline-41',
     numero: 41,
+    image: '/belline/belline-41.png',
     nom: 'Héritage',
     serie: 'Jupitérienne',
     polarite: 'neutre',
@@ -400,6 +442,7 @@ export const oracleBelline = [
   {
     id: 'belline-42',
     numero: 42,
+    image: '/belline/belline-42.png',
     nom: 'Sagesse',
     serie: 'Jupitérienne',
     polarite: 'positive',
@@ -409,6 +452,7 @@ export const oracleBelline = [
   {
     id: 'belline-43',
     numero: 43,
+    image: '/belline/belline-43.png',
     nom: 'Renommée',
     serie: 'Jupitérienne',
     polarite: 'positive',
@@ -418,6 +462,7 @@ export const oracleBelline = [
   {
     id: 'belline-44',
     numero: 44,
+    image: '/belline/belline-44.png',
     nom: 'Le Hasard',
     serie: 'Jupitérienne',
     polarite: 'positive',
@@ -427,6 +472,7 @@ export const oracleBelline = [
   {
     id: 'belline-45',
     numero: 45,
+    image: '/belline/belline-45.png',
     nom: 'Bonheur',
     serie: 'Jupitérienne',
     polarite: 'positive',
@@ -438,6 +484,7 @@ export const oracleBelline = [
   {
     id: 'belline-46',
     numero: 46,
+    image: '/belline/belline-46.png',
     nom: 'Infortune',
     serie: 'Saturnienne',
     polarite: 'negative',
@@ -447,6 +494,7 @@ export const oracleBelline = [
   {
     id: 'belline-47',
     numero: 47,
+    image: '/belline/belline-47.png',
     nom: 'Stérilité',
     serie: 'Saturnienne',
     polarite: 'negative',
@@ -456,6 +504,7 @@ export const oracleBelline = [
   {
     id: 'belline-48',
     numero: 48,
+    image: '/belline/belline-48.png',
     nom: 'Fatalité',
     serie: 'Saturnienne',
     polarite: 'negative',
@@ -465,6 +514,7 @@ export const oracleBelline = [
   {
     id: 'belline-49',
     numero: 49,
+    image: '/belline/belline-49.png',
     nom: 'Grâce',
     serie: 'Saturnienne',
     polarite: 'positive',
@@ -474,6 +524,7 @@ export const oracleBelline = [
   {
     id: 'belline-50',
     numero: 50,
+    image: '/belline/belline-50.png',
     nom: 'Ruine',
     serie: 'Saturnienne',
     polarite: 'negative',
@@ -483,6 +534,7 @@ export const oracleBelline = [
   {
     id: 'belline-51',
     numero: 51,
+    image: '/belline/belline-51.png',
     nom: 'Retard',
     serie: 'Saturnienne',
     polarite: 'negative',
@@ -492,6 +544,7 @@ export const oracleBelline = [
   {
     id: 'belline-52',
     numero: 52,
+    image: '/belline/belline-52.png',
     nom: 'Cloître',
     serie: 'Saturnienne',
     polarite: 'neutre',
