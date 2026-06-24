@@ -1,146 +1,204 @@
-// Données des cartes Lenormand
-const lenormandCards = [
-  { num: 1, name: "Le Cavalier", file: "lenormand-01.png" },
-  { num: 2, name: "Le Trèfle", file: "lenormand-02.png" },
-  { num: 3, name: "La Navire", file: "lenormand-03.png" },
-  { num: 4, name: "La Maison", file: "lenormand-04.png" },
-  { num: 5, name: "L'Arbre", file: "lenormand-05.png" },
-  { num: 6, name: "Les Nuages", file: "lenormand-06.png" },
-  { num: 7, name: "Le Serpent", file: "lenormand-07.png" },
-  { num: 8, name: "Le Cercueil", file: "lenormand-08.png" },
-  { num: 9, name: "Le Bouquet", file: "lenormand-09.png" },
-  { num: 10, name: "La Faux", file: "lenormand-10.png" },
-  { num: 11, name: "Le Fouet", file: "lenormand-11.png" },
-  { num: 12, name: "Les Oiseaux", file: "lenormand-12.png" },
-  { num: 13, name: "L'Enfant", file: "lenormand-13.png" },
-  { num: 14, name: "Le Vieillard", file: "lenormand-14.png" },
-  { num: 15, name: "L'Ours", file: "lenormand-15.png" },
-  { num: 16, name: "Les Étoiles", file: "lenormand-16.png" },
-  { num: 17, name: "La Cigogne", file: "lenormand-17.png" },
-  { num: 18, name: "Le Chien", file: "lenormand-18.png" },
-  { num: 19, name: "La Tour", file: "lenormand-19.png" },
-  { num: 20, name: "Le Parc", file: "lenormand-20.png" },
-  { num: 21, name: "Le Chemin", file: "lenormand-21.png" },
-  { num: 22, name: "La Souris", file: "lenormand-22.png" },
-  { num: 23, name: "Le Cœur", file: "lenormand-23.png" },
-  { num: 24, name: "L'Anneau", file: "lenormand-24.png" },
-  { num: 25, name: "Le Livre", file: "lenormand-25.png" },
-  { num: 26, name: "La Lettre", file: "lenormand-26.png" },
-  { num: 27, name: "L'Homme", file: "lenormand-27.png" },
-  { num: 28, name: "La Femme", file: "lenormand-28.png" },
-  { num: 29, name: "Le Lis", file: "lenormand-29.png" },
-  { num: 30, name: "Le Soleil", file: "lenormand-30.png" },
-  { num: 31, name: "La Lune", file: "lenormand-31.png" },
-  { num: 32, name: "La Clé", file: "lenormand-32.png" },
-  { num: 33, name: "Le Poisson", file: "lenormand-33.png" },
-  { num: 34, name: "L'Ancre", file: "lenormand-34.png" },
-  { num: 35, name: "La Croix", file: "lenormand-35.png" },
-  { num: 36, name: "L'Aigle", file: "lenormand-36.png" }
+// Données des cartes Tarot (placeholder en attente des vraies images)
+const tarotCards = [
+  { name: "The Fool", number: 0, suit: "Major" },
+  { name: "The Magician", number: 1, suit: "Major" },
+  { name: "The High Priestess", number: 2, suit: "Major" },
+  { name: "The Empress", number: 3, suit: "Major" },
+  { name: "The Emperor", number: 4, suit: "Major" },
+  { name: "The Hierophant", number: 5, suit: "Major" },
+  { name: "The Lovers", number: 6, suit: "Major" },
+  { name: "The Chariot", number: 7, suit: "Major" },
+  { name: "Strength", number: 8, suit: "Major" },
+  { name: "The Hermit", number: 9, suit: "Major" },
+  { name: "Wheel of Fortune", number: 10, suit: "Major" },
+  { name: "Justice", number: 11, suit: "Major" },
+  { name: "The Hanged Man", number: 12, suit: "Major" },
+  { name: "Death", number: 13, suit: "Major" },
+  { name: "Temperance", number: 14, suit: "Major" },
+  { name: "The Devil", number: 15, suit: "Major" },
+  { name: "The Tower", number: 16, suit: "Major" },
+  { name: "The Star", number: 17, suit: "Major" },
+  { name: "The Moon", number: 18, suit: "Major" },
+  { name: "The Sun", number: 19, suit: "Major" },
+  { name: "Judgement", number: 20, suit: "Major" },
+  { name: "The World", number: 21, suit: "Major" },
+  { name: "Ace of Cups", number: 1, suit: "Cups" },
+  { name: "Two of Cups", number: 2, suit: "Cups" },
+  { name: "Three of Cups", number: 3, suit: "Cups" },
+  { name: "Four of Cups", number: 4, suit: "Cups" },
+  { name: "Five of Cups", number: 5, suit: "Cups" },
+  { name: "Six of Cups", number: 6, suit: "Cups" },
+  { name: "Seven of Cups", number: 7, suit: "Cups" },
+  { name: "Eight of Cups", number: 8, suit: "Cups" },
+  { name: "Nine of Cups", number: 9, suit: "Cups" },
+  { name: "Ten of Cups", number: 10, suit: "Cups" },
+  { name: "Page of Cups", number: 11, suit: "Cups" },
+  { name: "Knight of Cups", number: 12, suit: "Cups" },
+  { name: "Queen of Cups", number: 13, suit: "Cups" },
+  { name: "King of Cups", number: 14, suit: "Cups" },
+  { name: "Ace of Wands", number: 1, suit: "Wands" },
+  { name: "Two of Wands", number: 2, suit: "Wands" },
+  { name: "Three of Wands", number: 3, suit: "Wands" },
+  { name: "Four of Wands", number: 4, suit: "Wands" },
+  { name: "Five of Wands", number: 5, suit: "Wands" },
+  { name: "Six of Wands", number: 6, suit: "Wands" },
+  { name: "Seven of Wands", number: 7, suit: "Wands" },
+  { name: "Eight of Wands", number: 8, suit: "Wands" },
+  { name: "Nine of Wands", number: 9, suit: "Wands" },
+  { name: "Ten of Wands", number: 10, suit: "Wands" },
+  { name: "Page of Wands", number: 11, suit: "Wands" },
+  { name: "Knight of Wands", number: 12, suit: "Wands" },
+  { name: "Queen of Wands", number: 13, suit: "Wands" },
+  { name: "King of Wands", number: 14, suit: "Wands" },
+  { name: "Ace of Swords", number: 1, suit: "Swords" },
+  { name: "Two of Swords", number: 2, suit: "Swords" },
+  { name: "Three of Swords", number: 3, suit: "Swords" },
+  { name: "Four of Swords", number: 4, suit: "Swords" },
+  { name: "Five of Swords", number: 5, suit: "Swords" },
+  { name: "Six of Swords", number: 6, suit: "Swords" },
+  { name: "Seven of Swords", number: 7, suit: "Swords" },
+  { name: "Eight of Swords", number: 8, suit: "Swords" },
+  { name: "Nine of Swords", number: 9, suit: "Swords" },
+  { name: "Ten of Swords", number: 10, suit: "Swords" },
+  { name: "Page of Swords", number: 11, suit: "Swords" },
+  { name: "Knight of Swords", number: 12, suit: "Swords" },
+  { name: "Queen of Swords", number: 13, suit: "Swords" },
+  { name: "King of Swords", number: 14, suit: "Swords" },
+  { name: "Ace of Pentacles", number: 1, suit: "Pentacles" },
+  { name: "Two of Pentacles", number: 2, suit: "Pentacles" },
+  { name: "Three of Pentacles", number: 3, suit: "Pentacles" },
+  { name: "Four of Pentacles", number: 4, suit: "Pentacles" },
+  { name: "Five of Pentacles", number: 5, suit: "Pentacles" },
+  { name: "Six of Pentacles", number: 6, suit: "Pentacles" },
+  { name: "Seven of Pentacles", number: 7, suit: "Pentacles" },
+  { name: "Eight of Pentacles", number: 8, suit: "Pentacles" },
+  { name: "Nine of Pentacles", number: 9, suit: "Pentacles" },
+  { name: "Ten of Pentacles", number: 10, suit: "Pentacles" },
+  { name: "Page of Pentacles", number: 11, suit: "Pentacles" },
+  { name: "Knight of Pentacles", number: 12, suit: "Pentacles" },
+  { name: "Queen of Pentacles", number: 13, suit: "Pentacles" },
+  { name: "King of Pentacles", number: 14, suit: "Pentacles" }
 ];
 
-// Données des cartes Belline (53)
-const bellineCards = [
-  { num: 1, name: "L'Allié", file: "belline-01.png" },
-  { num: 2, name: "L'Amant", file: "belline-02.png" },
-  { num: 3, name: "L'Ami", file: "belline-03.png" },
-  { num: 4, name: "L'Amitié", file: "belline-04.png" },
-  { num: 5, name: "L'Amour", file: "belline-05.png" },
-  { num: 6, name: "L'Ambition", file: "belline-06.png" },
-  { num: 7, name: "L'Ange", file: "belline-07.png" },
-  { num: 8, name: "L'Anneau", file: "belline-08.png" },
-  { num: 9, name: "L'Apparence", file: "belline-09.png" },
-  { num: 10, name: "L'Apprenti", file: "belline-10.png" },
-  { num: 11, name: "L'Arbre", file: "belline-11.png" },
-  { num: 12, name: "L'Archer", file: "belline-12.png" },
-  { num: 13, name: "L'Armée", file: "belline-13.png" },
-  { num: 14, name: "L'Arnaque", file: "belline-14.png" },
-  { num: 15, name: "L'Art", file: "belline-15.png" },
-  { num: 16, name: "L'Artisan", file: "belline-16.png" },
-  { num: 17, name: "L'Ascension", file: "belline-17.png" },
-  { num: 18, name: "L'Assaut", file: "belline-18.png" },
-  { num: 19, name: "L'Assistance", file: "belline-19.png" },
-  { num: 20, name: "L'Astre", file: "belline-20.png" },
-  { num: 21, name: "L'Athée", file: "belline-21.png" },
-  { num: 22, name: "L'Atlatl", file: "belline-22.png" },
-  { num: 23, name: "L'Atoll", file: "belline-23.png" },
-  { num: 24, name: "L'Atrophe", file: "belline-24.png" },
-  { num: 25, name: "L'Attache", file: "belline-25.png" },
-  { num: 26, name: "L'Attaque", file: "belline-26.png" },
-  { num: 27, name: "L'Attente", file: "belline-27.png" },
-  { num: 28, name: "L'Attention", file: "belline-28.png" },
-  { num: 29, name: "L'Attestation", file: "belline-29.png" },
-  { num: 30, name: "L'Attirer", file: "belline-30.png" },
-  { num: 31, name: "L'Attitude", file: "belline-31.png" },
-  { num: 32, name: "L'Attirance", file: "belline-32.png" },
-  { num: 33, name: "L'Attirail", file: "belline-33.png" },
-  { num: 34, name: "L'Attribut", file: "belline-34.png" },
-  { num: 35, name: "L'Aubade", file: "belline-35.png" },
-  { num: 36, name: "L'Aube", file: "belline-36.png" },
-  { num: 37, name: "L'Aubépine", file: "belline-37.png" },
-  { num: 38, name: "L'Auberge", file: "belline-38.png" },
-  { num: 39, name: "L'Aubergiste", file: "belline-39.png" },
-  { num: 40, name: "L'Aubin", file: "belline-40.png" },
-  { num: 41, name: "L'Aucun", file: "belline-41.png" },
-  { num: 42, name: "L'Audace", file: "belline-42.png" },
-  { num: 43, name: "L'Audience", file: "belline-43.png" },
-  { num: 44, name: "L'Audit", file: "belline-44.png" },
-  { num: 45, name: "L'Auge", file: "belline-45.png" },
-  { num: 46, name: "L'Augmentation", file: "belline-46.png" },
-  { num: 47, name: "L'Augure", file: "belline-47.png" },
-  { num: 48, name: "L'Aujourd'hui", file: "belline-48.png" },
-  { num: 49, name: "L'Aumône", file: "belline-49.png" },
-  { num: 50, name: "L'Aune", file: "belline-50.png" },
-  { num: 51, name: "L'Aurore", file: "belline-51.png" },
-  { num: 52, name: "L'Ausculte", file: "belline-52.png" },
-  { num: 53, name: "L'Auspice", file: "belline-53.png" }
-];
+// Variables globales
+let drawnCards = [];
+let currentCardIndex = 0;
+let isAnimating = false;
+let cardAnimationInterval = null;
 
-let currentDeck = 'lenormand';
-let currentCards = lenormandCards;
-
-const lenormandBtn = document.getElementById('lenormand-btn');
-const bellineBtn = document.getElementById('belline-btn');
-const drawBtn = document.getElementById('draw-btn');
-const cardDisplay = document.getElementById('card-display');
-
-// Sélectionner le jeu de cartes
-lenormandBtn.addEventListener('click', () => {
-  currentDeck = 'lenormand';
-  currentCards = lenormandCards;
-  lenormandBtn.classList.add('active');
-  bellineBtn.classList.remove('active');
-  cardDisplay.innerHTML = '';
-});
-
-bellineBtn.addEventListener('click', () => {
-  currentDeck = 'belline';
-  currentCards = bellineCards;
-  bellineBtn.classList.add('active');
-  lenormandBtn.classList.remove('active');
-  cardDisplay.innerHTML = '';
-});
-
-// Fonction pour tirer une carte au hasard
-function drawCard() {
-  const randomIndex = Math.floor(Math.random() * currentCards.length);
-  const card = currentCards[randomIndex];
-
-  const imagePath = `/Divinatory/public/${currentDeck}/${card.file}`;
-
-  const cardHTML = `
-    <div class="card">
-      <img src="${imagePath}" alt="${card.name}" />
-      <div class="card-number">Carte #${card.num}</div>
-      <div class="card-name">${card.name}</div>
-      <div class="card-description">
-        Une carte du jeu ${currentDeck === 'lenormand' ? 'Lenormand' : 'Belline'}
-      </div>
-    </div>
-  `;
-
-  cardDisplay.innerHTML = cardHTML;
+// Démarrer la musique d'ambiance
+function startAmbientMusic() {
+  const audio = document.getElementById('ambient-music');
+  if (audio) {
+    audio.volume = 0.3; // Volume à 30%
+    audio.play().catch(err => console.log('Audio non disponible:', err));
+  }
 }
 
-drawBtn.addEventListener('click', drawCard);
+// Arrêter la musique
+function stopAmbientMusic() {
+  const audio = document.getElementById('ambient-music');
+  if (audio) {
+    audio.pause();
+  }
+}
 
-console.log('Divinatory - App initialized');
+// Piocher une carte aléatoire
+function drawRandomCard() {
+  return tarotCards[Math.floor(Math.random() * tarotCards.length)];
+}
+
+// Initialiser le tirage
+function initializeDraw(numberOfCards) {
+  drawnCards = [];
+  for (let i = 0; i < numberOfCards; i++) {
+    drawnCards.push(drawRandomCard());
+  }
+  return drawnCards;
+}
+
+// Créer la grille de cartes avec animation de défilement
+function createCardsGrid() {
+  const grid = document.getElementById('cards-grid');
+  grid.innerHTML = '';
+
+  drawnCards.forEach((card, index) => {
+    const cardElement = document.createElement('div');
+    cardElement.className = 'card-placeholder';
+    cardElement.textContent = '🂠'; // Emoji dos de carte
+    cardElement.setAttribute('data-index', index);
+    cardElement.onclick = () => revealCard(index);
+    grid.appendChild(cardElement);
+  });
+
+  startCardFlipAnimation();
+  startAmbientMusic();
+}
+
+// Animation de défilement des cartes
+function startCardFlipAnimation() {
+  const cards = document.querySelectorAll('.card-placeholder');
+  let flipIndex = 0;
+
+  cardAnimationInterval = setInterval(() => {
+    // Réinitialiser toutes les cartes
+    cards.forEach(card => {
+      card.textContent = '🂠';
+      card.style.opacity = '1';
+    });
+
+    // Animation rapide sur les cartes non révélées
+    const randomCard = cards[Math.floor(Math.random() * cards.length)];
+    randomCard.style.opacity = '0.5';
+  }, 300);
+}
+
+// Révéler une carte au clic
+function revealCard(index) {
+  const card = drawnCards[index];
+  const cardElement = document.querySelector(`[data-index="${index}"]`);
+
+  if (cardElement.classList.contains('revealed')) {
+    return; // Carte déjà révélée
+  }
+
+  // Animation de retournement
+  cardElement.classList.add('card-flip');
+  
+  setTimeout(() => {
+    cardElement.textContent = '✨';
+    cardElement.classList.add('revealed');
+    cardElement.style.pointerEvents = 'none';
+    cardElement.style.opacity = '1';
+    
+    displayRevealedCard(card, index);
+  }, 300);
+}
+
+// Afficher la carte révélée dans la section dédiée
+function displayRevealedCard(card, position) {
+  const revealedSection = document.getElementById('revealed-card');
+  revealedSection.style.display = 'block';
+  revealedSection.innerHTML = `
+    <h3>${card.name}</h3>
+    <p><strong>Position:</strong> ${position + 1}</p>
+    <p><strong>Suit:</strong> ${card.suit}</p>
+  `;
+}
+
+// Gérer le bouton de démarrage du tirage
+document.addEventListener('DOMContentLoaded', () => {
+  const startBtn = document.getElementById('start-btn');
+  
+  startBtn.addEventListener('click', () => {
+    // Nombre de cartes par défaut (16 pour Type A)
+    const numberOfCards = 16;
+    
+    initializeDraw(numberOfCards);
+    createCardsGrid();
+    
+    document.getElementById('cards-grid').style.display = 'grid';
+    document.getElementById('revealed-card').style.display = 'none';
+    startBtn.style.display = 'none';
+  });
+});
