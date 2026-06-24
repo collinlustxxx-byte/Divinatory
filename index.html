@@ -2,13 +2,42 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/Divinatory/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Divinatory – L'Art du Tirage</title>
-
+    <title>Divinatory 🔮</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <div id="root">
+        <header>
+            <h1>🔮 Divinatory</h1>
+            <p>L'Art du Tirage de Cartes Divinatoires</p>
+        </header>
+
+        <main>
+            <section class="tirage-container">
+                <h2>Tirage des Cartes</h2>
+                <button class="draw-button" id="start-btn">Commencer le Tirage</button>
+                
+                <div id="cards-grid" class="cards-grid" style="display:none;">
+                    <!-- Les cartes s'afficheront ici -->
+                </div>
+
+                <div id="revealed-card" class="revealed-card" style="display:none;">
+                    <!-- La carte révélée s'affichera ici -->
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 Divinatory</p>
+        </footer>
+    </div>
+
+    <!-- Musique d'ambiance -->
+    <audio id="ambient-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="app.js"></script>
 </body>
 </html>
